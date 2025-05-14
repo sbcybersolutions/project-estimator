@@ -1,0 +1,45 @@
+.estimateForm {
+  width: 90%;          /* responsive: fill up to max */
+  max-width: 400px;    /* cap it for large screens */
+  margin: 0 auto;
+  padding: 1.5rem;
+  background: #3711dd;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-sizing: border-box;
+}
+
+.formGroup {
+  margin-bottom: 1rem;
+}
+
+.formGroup label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.formGroup input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  color: #f0e9e9;         /* force text to black */
+  box-sizing: border-box;
+}
+
+.submitButton {
+  display: block;
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1rem;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.submitButton:hover {
+  background-color: #0056b3;
+}
