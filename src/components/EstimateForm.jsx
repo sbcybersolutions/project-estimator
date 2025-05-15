@@ -1,15 +1,20 @@
 // src/components/EstimateForm.jsx
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styles from './EstimateForm.module.css';
 
-export default function EstimateForm({ onSubmit }) {
+export default function EstimateForm() {
   const [clientName, setClientName] = useState('');
   const [projectName, setProjectName] = useState('');
   const [estimateDate, setEstimateDate] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = e => {
     e.preventDefault();
-    onSubmit({ clientName, projectName, estimateDate });
+    // pass all three values into location.state
+    navigate('/select-type', {
+      state: { clientName, projectName, estimateDate }
+    });
   };
 
   return (

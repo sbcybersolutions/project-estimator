@@ -1,41 +1,39 @@
 // src/App.jsx
-import React, { useState } from 'react';
-import './App.css';
-import EstimateForm from './components/EstimateForm';
-import EstimateTypeSelector from './components/EstimateTypeSelector';
+import React from 'react'
+import { Routes, Route } from 'react-router-dom'
+import EstimateForm from './components/EstimateForm'
+import EstimateTypeSelector from './components/EstimateTypeSelector'
+import CustomCoursePage from './pages/CustomCoursePage'
+import CoursePlusVideoPage from './pages/CoursePlusVideoPage'
+import CustomVideoPage from './pages/CustomVideoPage'
+import './App.css'
 
-function App() {
-  // 'form' shows the client/project/date form,
-  // 'type' shows the estimate type selector
-  const [step, setStep] = useState('form');
-  const [formValues, setFormValues] = useState(null);
-
-  // Called when the user submits the EstimateForm
-  const handleEstimateStart = values => {
-    setFormValues(values);
-    setStep('type');
-  };
-
-  // Called when the user selects an estimate type
-  const handleTypeSelect = type => {
-    console.log('Selected estimate type:', type);
-    console.log('Form data:', formValues);
-    // TODO: proceed to next step (e.g. detailed estimate builder or routing)
-  };
-
+export default function App() {
   return (
     <div className="App">
       <h1>Project Estimator</h1>
 
-      {step === 'form' && (
-        <EstimateForm onSubmit={handleEstimateStart} />
-      )}
+      <Routes>
+        {/* Step 1: collect client/project/date */}
+        <Route path="/" element={<EstimateForm />} />
 
-      {step === 'type' && (
-        <EstimateTypeSelector onSelect={handleTypeSelect} />
-      )}
+        {/* Step 2: pick an estimate type */}
+        <Route path="/select-type" element={<EstimateTypeSelector />} />
+
+        {/* Step 3: build one of the three estimate forms */}
+        <Route
+          path="/estimate/customCourse"
+          element={<CustomCoursePage />}
+        />
+        <Route
+          path="/estimate/coursePlusVideo"
+          element={<CoursePlusVideoPage />}
+        />
+        <Route
+          path="/estimate/customVideo"
+          element={<CustomVideoPage />}
+        />
+      </Routes>
     </div>
-  );
+  )
 }
-
-export default App;
