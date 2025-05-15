@@ -1,16 +1,67 @@
-import React from 'react'
-import { useLocation } from 'react-router-dom'
+import React, { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 export default function CustomVideoPage() {
-  const { state } = useLocation()
+  const { state } = useLocation();
+  const { clientName, projectName, estimateDate } = state || {};
+
+  const [numVideos, setNumVideos] = useState(1);
+  const [studioDays, setStudioDays] = useState(1);
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    console.log('Custom Video Estimate:', {
+      clientName,
+      projectName,
+      estimateDate,
+      numVideos,
+      studioDays
+    });
+    // TODO: next step
+  };
+
   return (
-    <div style={{ padding: '2rem' }}>
+    <div style={{ padding: '2rem', maxWidth: 500, margin: '0 auto' }}>
       <h2>Custom Video Estimate</h2>
       <p>
-        For <strong>{state.clientName}</strong> / <em>{state.projectName}</em>{' '}
-        on {state.estimateDate}
+        For <strong>{clientName}</strong> / <em>{projectName}</em> on {estimateDate}
       </p>
-      {/* TODO: render line‐item inputs for a Custom Video */}
+
+      <form onSubmit={handleSubmit}>
+        <div style={{ marginBottom: '1rem' }}>
+          <label htmlFor="numVideos" style={{ display: 'block', marginBottom: '.5rem' }}>
+            Number of Videos
+          </label>
+          <input
+            type="number"
+            id="numVideos"
+            value={numVideos}
+            onChange={e => setNumVideos(e.target.value)}
+            min="1"
+            required
+            style={{ width: '100%', padding: '.5rem', boxSizing: 'border-box' }}
+          />
+        </div>
+
+        <div style={{ marginBottom: '1rem' }}>
+          <label htmlFor="studioDays" style={{ display: 'block', marginBottom: '.5rem' }}>
+            Number of Studio Days
+          </label>
+          <input
+            type="number"
+            id="studioDays"
+            value={studioDays}
+            onChange={e => setStudioDays(e.target.value)}
+            min="0"
+            required
+            style={{ width: '100%', padding: '.5rem', boxSizing: 'border-box' }}
+          />
+        </div>
+
+        <button type="submit" style={{ padding: '.75rem 1.5rem', cursor: 'pointer' }}>
+          Continue
+        </button>
+      </form>
     </div>
-  )
+  );
 }
