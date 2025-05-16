@@ -8,18 +8,46 @@ export default function CustomCoursePage() {
 
   // Editable fields
   const [numCourses, setNumCourses] = useState(1);
-  const [smeUnits, setSmeUnits] = useState(0);
-  const [smeRate, setSmeRate] = useState(0);
-  const [smeLift, setSmeLift] = useState(1);
+  const [smeUnits,   setSmeUnits]   = useState(0);
+  const [smeRate,    setSmeRate]    = useState(0);
+  const [smeLift,    setSmeLift]    = useState(0.1); // e.g. 0.1 for 10% lift
 
   // Computed values
-  const smeHardCost = useMemo(() => Number(smeUnits) * Number(smeRate), [smeUnits, smeRate]);
-  const smeBillRate = useMemo(() => (smeLift > 0 ? Number(smeRate) / Number(smeLift) : 0), [smeRate, smeLift]);
-  const smePrice = useMemo(() => Number(smeUnits) * Number(smeBillRate), [smeUnits, smeBillRate]);
+  const smeHardCost = useMemo(
+    () => Number(smeUnits) * Number(smeRate),
+    [smeUnits, smeRate]
+  );
+
+  const smeBillRate = useMemo(() => {
+    const liftVal = Number(smeLift);
+    const denom = 1 - liftVal;
+    return denom !== 0
+      ? Number(smeRate) / denom
+      : 0;
+  }, [smeRate, smeLift]);
+
+  const smePrice = useMemo(
+    () => Number(smeUnits) * smeBillRate,
+    [smeUnits, smeBillRate]
+  );
 
   const handleSubmit = e => {
     e.preventDefault();
-    // ...submit logic...
+    console.log('Custom Course Estimate:', {
+      clientName,
+      projectName,
+      estimateDate,
+      numCourses,
+      SME: {
+        units:     smeUnits,
+        rate:      smeRate,
+        lift:      smeLift,
+        hardCost:  smeHardCost,
+        billRate:  smeBillRate,
+        price:     smePrice
+      }
+    });
+    // TODO: save & navigate onward
   };
 
   const gridStyle = {
@@ -55,19 +83,17 @@ export default function CustomCoursePage() {
             onChange={e => setNumCourses(e.target.value)}
             min="1"
             required
-            style={{ width: '80px', padding: '0.25rem', boxSizing: 'border-box', fontSize: '0.9rem' }}
+            style={{
+              width: '80px',
+              padding: '0.25rem',
+              boxSizing: 'border-box',
+              fontSize: '0.9rem'
+            }}
           />
         </div>
 
-        {/* —— Header Row of Labels —— */}
-        <div
-          style={{
-            ...gridStyle,
-            marginBottom: '0.5rem',
-            fontWeight: 600,
-            textAlign: 'center'
-          }}
-        >
+        {/* Header row */}
+        <div style={{ ...gridStyle, marginBottom: '0.5rem', fontWeight: 600, textAlign: 'center' }}>
           <div></div>
           <div>Hours/Units</div>
           <div>Rate</div>
@@ -77,7 +103,7 @@ export default function CustomCoursePage() {
           <div>Price</div>
         </div>
 
-        {/* —— SME Row —— */}
+        {/* SME row */}
         <div style={{ ...gridStyle, marginBottom: '1.5rem' }}>
           <div style={{ textAlign: 'right', fontWeight: 600 }}>SME</div>
 
@@ -88,7 +114,7 @@ export default function CustomCoursePage() {
             onChange={e => setSmeUnits(e.target.value)}
             min="0"
             required
-            style={{ width: '100%', padding: '0.25rem', fontSize: '0.85rem', boxSizing: 'border-box' }}
+            style={{ padding: '0.25rem', fontSize: '0.85rem', boxSizing: 'border-box' }}
           />
 
           <input
@@ -98,7 +124,7 @@ export default function CustomCoursePage() {
             onChange={e => setSmeRate(e.target.value)}
             min="0"
             required
-            style={{ width: '100%', padding: '0.25rem', fontSize: '0.85rem', boxSizing: 'border-box' }}
+            style={{ padding: '0.25rem', fontSize: '0.85rem', boxSizing: 'border-box' }}
           />
 
           <input
@@ -107,7 +133,6 @@ export default function CustomCoursePage() {
             value={smeHardCost.toFixed(2)}
             readOnly
             style={{
-              width: '100%',
               padding: '0.25rem',
               fontSize: '0.85rem',
               boxSizing: 'border-box',
@@ -121,10 +146,10 @@ export default function CustomCoursePage() {
             placeholder="Lift"
             value={smeLift}
             onChange={e => setSmeLift(e.target.value)}
-            min="0.01"
+            min="0"
             step="0.01"
             required
-            style={{ width: '100%', padding: '0.25rem', fontSize: '0.85rem', boxSizing: 'border-box' }}
+            style={{ padding: '0.25rem', fontSize: '0.85rem', boxSizing: 'border-box' }}
           />
 
           <input
@@ -133,7 +158,6 @@ export default function CustomCoursePage() {
             value={smeBillRate.toFixed(2)}
             readOnly
             style={{
-              width: '100%',
               padding: '0.25rem',
               fontSize: '0.85rem',
               boxSizing: 'border-box',
@@ -148,7 +172,6 @@ export default function CustomCoursePage() {
             value={smePrice.toFixed(2)}
             readOnly
             style={{
-              width: '100%',
               padding: '0.25rem',
               fontSize: '0.85rem',
               boxSizing: 'border-box',
@@ -158,7 +181,7 @@ export default function CustomCoursePage() {
           />
         </div>
 
-        <button type="submit" style={{ padding: '.75rem 1.5rem', cursor: 'pointer' }}>
+        <button type="submit" style={{ padding: '0.75rem 1.5rem', cursor: 'pointer' }}>
           Continue
         </button>
       </form>
