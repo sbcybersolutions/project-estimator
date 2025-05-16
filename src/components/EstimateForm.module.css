@@ -3,7 +3,7 @@
   max-width: 400px;    /* cap it for large screens */
   margin: 0 auto;
   padding: 1.5rem;
-  background: #3711dd;
+  background: #F26E22;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   box-sizing: border-box;
@@ -33,7 +33,7 @@
   width: 100%;
   padding: 0.75rem;
   font-size: 1rem;
-  background-color: #007bff;
+  background-color: #9C1F24;
   color: #fff;
   border: none;
   border-radius: 4px;
@@ -41,5 +41,5 @@
 }
 
 .submitButton:hover {
-  background-color: #0056b3;
+  background-color:#0A1126;
 }
