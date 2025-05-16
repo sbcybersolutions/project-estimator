@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 
 export default function CoursePlusVideoPage() {
   const { state } = useLocation();
@@ -22,6 +22,12 @@ export default function CoursePlusVideoPage() {
 
   return (
     <div style={{ padding: '2rem', maxWidth: 500, margin: '0 auto' }}>
+      <header style={{ marginBottom: '1.5rem' }}>
+        <Link to="/" style={{ textDecoration: 'none', color: '#007bff' }}>
+          ← Back to Estimate Form
+        </Link>
+      </header>
+
       <h2>Custom Course + Video Estimate</h2>
       <p>
         For <strong>{clientName}</strong> / <em>{projectName}</em> on {estimateDate}
@@ -65,4 +71,3 @@ export default function CoursePlusVideoPage() {
     </div>
   );
 }
-
